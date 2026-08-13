@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Incinerator Hood — Public Redistribution Rail</title>
+  <style>
+    :root{--acid:#c8ff3d;--acid-dim:#8aa92c;--ink:#07100d;--deep:#0a1713;--panel:#0d2019;--line:rgba(200,255,61,.22);--muted:#829389}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--ink);color:#d9e8d2;font-family:"Courier New",monospace}
+    button{font:inherit}
+    .crh-shell{min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#183822 0%,#0b1713 40%,#07100d 79%);position:relative;overflow:hidden}
+    .crh-shell:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.24;background-image:linear-gradient(rgba(200,255,61,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,255,61,.025) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000 0%,transparent 80%)}
+    .crh-shell:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E")}
+    .crh-nav{height:64px;border-bottom:1px solid rgba(200,255,61,.16);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,60px);position:relative;z-index:4}
+    .crh-brand{display:flex;align-items:center;gap:10px;color:var(--acid);font-size:12px;letter-spacing:.1em;font-weight:700;background:transparent;border:0;cursor:pointer;padding:0}
+    .crh-brand small{color:#e8f2d8;font-size:10px;letter-spacing:.18em;font-weight:400}
+    .crh-navlinks{display:flex;gap:6px;align-items:center}
+    .crh-navlinks button,.crh-connect,.crh-menu{font:inherit;color:#9eb29d;background:transparent;border:1px solid rgba(200,255,61,.2);padding:8px 13px;font-size:10px;letter-spacing:.12em;cursor:pointer;transition:.2s ease}
+    .crh-navlinks button:hover,.crh-menu:hover{color:var(--acid);border-color:var(--acid);background:rgba(200,255,61,.06)}
+    .crh-connect{color:var(--acid);border-color:var(--acid);display:flex;align-items:center;gap:8px}
+    .crh-connect:hover{background:var(--acid);color:var(--ink);box-shadow:0 0 24px rgba(200,255,61,.16)}
+    .crh-menu{display:none;padding:8px}
+    .crh-navpanel{position:absolute;right:18px;top:56px;width:214px;padding:10px;background:#0c1b15;border:1px solid var(--acid);box-shadow:0 14px 40px #0008;display:grid;gap:3px}
+    .crh-navpanel button{text-align:left;font:inherit;font-size:10px;letter-spacing:.08em;color:#bbccad;background:transparent;border:0;padding:11px;cursor:pointer}
+    .crh-navpanel button:hover{background:rgba(200,255,61,.1);color:var(--acid)}
+    .crh-main{height:calc(100vh - 108px);overflow-y:auto;scrollbar-width:none;position:relative;z-index:1}
+    .crh-main::-webkit-scrollbar{display:none}
+    .crh-hero{max-width:1080px;margin:0 auto;min-height:calc(100vh - 108px);padding:clamp(22px,5vh,60px) 22px 38px;display:flex;flex-direction:column;justify-content:center}
+    .crh-kicker{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(200,255,61,.16);padding-bottom:12px;color:#738678;font-size:10px;letter-spacing:.14em}
+    .crh-live{color:var(--acid);display:flex;align-items:center;gap:7px}.crh-live i{width:6px;height:6px;background:var(--acid);display:block;box-shadow:0 0 10px var(--acid);animation:pulse 1.8s infinite}
+    .crh-layout{display:grid;grid-template-columns:1fr minmax(340px,470px) 1fr;align-items:center;gap:clamp(20px,4vw,72px);padding:clamp(28px,5vh,62px) 0}
+    .crh-intro h1{font-family:"Trebuchet MS",sans-serif;font-size:clamp(36px,5vw,68px);line-height:.93;letter-spacing:-.055em;color:#e4f4d8;margin:0 0 19px}.crh-intro h1 span{color:var(--acid);font-style:italic}
+    .crh-intro p{color:#87998c;font-size:11px;line-height:1.9;max-width:260px;margin:0}
+    .crh-side{font-size:10px;color:#75897b;line-height:1.8}.crh-side .line{border-left:1px solid var(--acid-dim);padding-left:13px;margin:13px 0}.crh-side strong{color:#d4e6ca;font-weight:400}.crh-side em{color:var(--acid);font-style:normal}
+    .crh-card{background:linear-gradient(145deg,rgba(17,43,30,.94),rgba(7,18,13,.96));border:1px solid var(--acid);box-shadow:0 0 0 5px rgba(200,255,61,.035),0 20px 70px rgba(0,0,0,.4);padding:25px 26px 21px;position:relative}
+    .crh-card:before,.crh-card:after{content:"";position:absolute;width:9px;height:9px;border-color:var(--acid);border-style:solid}.crh-card:before{left:-1px;top:-1px;border-width:2px 0 0 2px}.crh-card:after{right:-1px;bottom:-1px;border-width:0 2px 2px 0}
+    .crh-cardhead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,255,61,.15);padding-bottom:16px;margin-bottom:22px}.crh-cardhead label{font-size:10px;color:#a3bba1;letter-spacing:.16em}.crh-code{font-size:9px;color:var(--acid);padding:5px 7px;border:1px solid rgba(200,255,61,.3)}
+    .crh-emblem{height:105px;display:flex;justify-content:center;align-items:center;color:var(--acid);position:relative}.crh-emblem:before{content:"";position:absolute;width:108px;height:108px;border:1px dashed rgba(200,255,61,.25);border-radius:50%;animation:spin 20s linear infinite}.crh-emblem svg{filter:drop-shadow(0 0 12px rgba(200,255,61,.28))}
+    .crh-card h2{text-align:center;font-family:"Trebuchet MS",sans-serif;font-size:22px;letter-spacing:-.04em;color:#ecf8e2;margin:12px 0 7px}.crh-card .sub{text-align:center;color:#748a79;font-size:9px;line-height:1.7;margin:0 0 23px}
+    .crh-action{width:100%;padding:15px 16px;border:1px solid var(--acid);background:var(--acid);color:var(--ink);font:700 11px "Courier New",monospace;letter-spacing:.12em;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:10px;transition:.2s}
+    .crh-action:hover{box-shadow:0 0 26px rgba(200,255,61,.28);transform:translateY(-2px)}.crh-action:active{transform:translateY(0)}.crh-action.armed{background:#eefbcf;color:#13210e}
+    .crh-metrics{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(200,255,61,.14);margin-top:20px;padding-top:15px;gap:12px}.crh-metric label{display:block;color:#69806e;font-size:8px;letter-spacing:.1em;margin-bottom:7px}.crh-metric strong{font-size:12px;color:#d5e9c9;font-weight:400}.crh-metric strong.green{color:var(--acid)}
+    .crh-log{font-size:9px;color:#769078;margin-top:21px;display:flex;align-items:center;gap:8px}.crh-log b{color:var(--acid);font-weight:400}.crh-log .bar{height:1px;background:rgba(200,255,61,.2);flex:1}
+    .crh-underline{color:#718976;font-size:10px;letter-spacing:.1em;text-align:center}.crh-underline span{color:var(--acid)}
+    .crh-section{max-width:1080px;margin:0 auto;padding:70px 22px 90px;border-top:1px solid rgba(200,255,61,.14)}.crh-section h3{font-family:"Trebuchet MS",sans-serif;font-size:30px;color:#e8f5dc;margin:0 0 10px}.crh-section p{color:#879a89;font-size:11px;line-height:1.9;max-width:530px}
+    .crh-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}.crh-step{border:1px solid rgba(200,255,61,.18);padding:19px;background:rgba(13,32,25,.7)}.crh-step b{color:var(--acid);font-size:12px}.crh-step h4{font-size:12px;color:#d8e9d0;font-weight:400;margin:18px 0 8px}.crh-step p{font-size:9px;margin:0}
+    .crh-footer{height:44px;border-top:1px solid rgba(200,255,61,.18);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,4vw,60px);font-size:9px;color:#708577;position:fixed;bottom:0;left:0;right:0;background:rgba(7,16,13,.92);backdrop-filter:blur(10px);z-index:5}.crh-footer span{color:var(--acid)}.footer-right{display:flex;gap:20px}
+    .crh-toast{position:fixed;right:22px;bottom:62px;border:1px solid var(--acid);background:#112519;color:var(--acid);padding:12px 16px;font-size:10px;z-index:6;animation:toast-in .25s ease}
+    .icon{width:14px;height:14px;display:inline-block;vertical-align:-3px}.hidden{display:none}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.65)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    @media(max-width:820px){.crh-navlinks{display:none}.crh-menu{display:block}.crh-layout{grid-template-columns:1fr;gap:30px;text-align:center}.crh-intro p{margin:auto}.crh-side{display:none}.crh-card{max-width:470px;margin:auto;width:100%}.crh-hero{padding-top:25px}.crh-kicker{font-size:8px}.crh-steps{grid-template-columns:1fr}.crh-section{padding-top:50px}.crh-shell{overflow:auto}.crh-main{height:auto;overflow:visible}.crh-footer{position:sticky}.crh-underline{margin-top:0}}
+    @media(max-width:420px){.crh-card{padding:21px 17px}.crh-intro h1{font-size:42px}.crh-footer{font-size:8px}.footer-right{gap:9px}}
+  </style>
+</head>
+<body>
+  <div class="crh-shell">
+    <header class="crh-nav">
+      <button class="crh-brand" data-scroll="home" aria-label="Back to home">
+        <svg width="30" height="30" viewBox="0 0 76 76" fill="none" aria-label="Incinerator Hood emblem"><path d="M18 59V31L38 14L58 31V59" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/><path d="M27 59V43C27 37.5 31.9 33 38 33C44.1 33 49 37.5 49 43V59" stroke="currentColor" stroke-width="2.4"/><path d="M38 54C31.5 49.6 31.9 44 35.1 40.5C35.8 44 38.6 43.6 39.8 39.1C45.5 45.2 45.2 50.1 38 54Z" fill="currentColor"/><path d="M18 31L10 38M58 31L66 38M23 59H53" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></svg>
+        <span>INCINERATOR HOOD <small>/ IH.01</small></span>
+      </button>
+      <nav class="crh-navlinks" aria-label="Primary navigation"><button data-scroll="protocol">PROTOCOL</button><button data-scroll="ledger">LEDGER</button><button data-scroll="help">HELP</button></nav>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="crh-connect" id="connectBtn"><span class="icon">◈</span><span id="connectText">CONNECT</span></button>
+        <button class="crh-menu" id="menuBtn" aria-label="Open menu">☰</button>
+      </div>
+      <div class="crh-navpanel hidden" id="menuPanel">
+        <button data-scroll="protocol">01 / THE PROTOCOL</button><button data-scroll="ledger">02 / PUBLIC LEDGER</button><button data-scroll="help">03 / FIELD NOTES</button><button id="closeMenu">CLOSE TERMINAL ×</button>
+      </div>
+    </header>
+    <main class="crh-main">
+      <section class="crh-hero" id="home">
+        <div class="crh-kicker"><span>SHERWOOD NODE // 04:17 UTC</span><span class="crh-live"><i></i>NETWORK OPERATIONAL</span></div>
+        <div class="crh-layout">
+          <div class="crh-intro"><h1>Take from<br>the <span>many.</span><br>Return to all.</h1><p>A public redistribution rail for the on-chain commons. No velvet ropes. No black boxes. Just receipts.</p></div>
+          <div class="crh-card">
+            <div class="crh-cardhead"><label>REDISTRIBUTION TERMINAL</label><span class="crh-code">IH / 001</span></div>
+            <div class="crh-emblem"><svg width="76" height="76" viewBox="0 0 76 76" fill="none" aria-label="Incinerator Hood emblem"><path d="M18 59V31L38 14L58 31V59" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/><path d="M27 59V43C27 37.5 31.9 33 38 33C44.1 33 49 37.5 49 43V59" stroke="currentColor" stroke-width="2.4"/><path d="M38 54C31.5 49.6 31.9 44 35.1 40.5C35.8 44 38.6 43.6 39.8 39.1C45.5 45.2 45.2 50.1 38 54Z" fill="currentColor"/><path d="M18 31L10 38M58 31L66 38M23 59H53" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></svg></div>
+            <h2>Robin Hood the excess.</h2><p class="sub">Scan the pool. Find the idle value.<br>Send it where the people are.</p>
+            <button class="crh-action" id="redistributeBtn"><span class="icon">↓</span><span id="redistributeText">INITIATE REDISTRIBUTION</span></button>
+            <div class="crh-metrics"><div class="crh-metric"><label>COMMUNITY POOL</label><strong>18,472.08 <small>IH</small></strong></div><div class="crh-metric"><label>RETURNED TO DATE</label><strong class="green">91,804.37 IH</strong></div></div>
+            <div class="crh-log"><span class="icon">⌁</span><b>&gt;</b><span class="bar"></span><span id="activityText">READY FOR INPUT</span></div>
+          </div>
+          <div class="crh-side"><div class="line">A different kind of<br><strong>treasure map.</strong></div><div class="line">Every movement is<br><em>visible by design.</em></div><div class="line">Built for the<br><strong>unreasonably generous.</strong></div><div style="display:flex;align-items:center;gap:8px;margin-top:20px;color:#bdd3b5"><span>↗</span><span>READ THE MANIFESTO</span></div></div>
+        </div>
+        <div class="crh-underline"><span>↓</span> SCROLL TO INSPECT THE TRAIL <span>↓</span></div>
+      </section>
+      <section class="crh-section" id="protocol"><h3>The protocol is the promise.</h3><p>Incinerator Hood turns opaque protocol surplus into an auditable community signal. Every handoff has a timestamp, a route, and a witness.</p><div class="crh-steps"><div class="crh-step"><b>01</b><h4>SPOT THE SURPLUS</h4><p>We watch public pools for value sitting still when it could be doing good.</p></div><div class="crh-step"><b>02</b><h4>OPEN THE LEDGER</h4><p>Anyone can inspect the route before a single token moves.</p></div><div class="crh-step"><b>03</b><h4>RETURN THE SPOILS</h4><p>One deliberate action sends the excess back into the commons.</p></div></div></section>
+      <section class="crh-section" id="ledger"><h3>Nothing hidden in the hedges.</h3><p>Live receipts from the Sherwood node. The forest remembers every generous act.</p><div class="crh-step" style="margin-top:28px"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--acid)"><span>PUBLIC LEDGER / LAST 24H</span><span>VERIFIED</span></div><div style="margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:9px;color:#849986"><span>04:12:09<br><b style="color:#d9e8d2;font-weight:400">POOL SCAN</b></span><span>03:49:22<br><b style="color:#d9e8d2;font-weight:400">+ 2,084 CRH</b></span><span>02:18:41<br><b style="color:#d9e8d2;font-weight:400">RETURNED</b></span></div></div></section>
+      <section class="crh-section" id="help"><h3>Field notes.</h3><p>IH is a consumer utility for transparent redistribution. Start small. Read everything. Keep your keys close.</p><div style="margin-top:24px;display:flex;align-items:center;gap:8px;font-size:10px;color:var(--acid)"><span>?</span><span>THE SHORT VERSION: TRUST, BUT VERIFY.</span></div></section>
+    </main>
+    <footer class="crh-footer"><span>IH.01 / SHERWOOD NODE</span><div class="footer-right"><span>CHAIN ID: 001</span><span class="hidden-mobile">LATENCY: 42MS</span><span>ALL SYSTEMS GREEN</span></div></footer>
+    <div class="crh-toast hidden" id="toast">✓ WALLET LINK ESTABLISHED / SESSION LOCAL</div>
+  </div>
+  <script>
+    const panel = document.getElementById("menuPanel");
+    const menuBtn = document.getElementById("menuBtn");
+    const connectBtn = document.getElementById("connectBtn");
+    const connectText = document.getElementById("connectText");
+    const toast = document.getElementById("toast");
+    const action = document.getElementById("redistributeBtn");
+    const actionText = document.getElementById("redistributeText");
+    const activityText = document.getElementById("activityText");
+    let connected = false;
+    menuBtn.addEventListener("click", () => { panel.classList.toggle("hidden"); menuBtn.textContent = panel.classList.contains("hidden") ? "☰" : "×"; });
+    document.getElementById("closeMenu").addEventListener("click", () => { panel.classList.add("hidden"); menuBtn.textContent = "☰"; });
+    document.querySelectorAll("[data-scroll]").forEach((button) => button.addEventListener("click", () => { document.getElementById(button.dataset.scroll).scrollIntoView({behavior:"smooth",block:"nearest"}); panel.classList.add("hidden"); menuBtn.textContent = "☰"; }));
+    connectBtn.addEventListener("click", () => { connected = !connected; connectText.textContent = connected ? "0x7A...F19C" : "CONNECT"; toast.classList.toggle("hidden", !connected); if (connected) setTimeout(() => toast.classList.add("hidden"), 3000); });
+    action.addEventListener("click", () => { action.classList.add("armed"); actionText.textContent = "REDISTRIBUTION ARMED"; activityText.textContent = "BROADCASTING..."; setTimeout(() => { action.classList.remove("armed"); actionText.textContent = "INITIATE REDISTRIBUTION"; activityText.textContent = "READY FOR INPUT"; }, 2600); });
+  </script>
+</body>
+</html>
